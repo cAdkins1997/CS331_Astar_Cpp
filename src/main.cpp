@@ -8,6 +8,8 @@
 struct node {
     int id;
 
+    /*g and h costs are placeholders, only random for the sake of having values to test for.
+    A function to calculate these values should be implemented at a later date */
     int g_cost = rand() % 50 + 1;
     int h_cost = rand() % 50 + 1;
     int f_cost = g_cost + h_cost;
@@ -31,6 +33,8 @@ int main() {
         nodesToEval[i].id = i;
     }
 
+    /* the logic behind the while loop is also placeholder and should change once more of the algorithm is put together,
+    right now it basically just executes as if the while loop wasn't even there */
     bool done = false;
     while (!done) {
         node targetNode;
