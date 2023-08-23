@@ -21,13 +21,13 @@ struct node {
 
 node nodeGrid[10][10];
 
-std::vector<node> nodesToEval(10);
-std::vector<node> nodesEvaled;
-
 void printNodeVector(const std::vector<node>& vector, const std::string& descriptionMessage);
 bool isFCostGreater(const node& node1, const node& node2);
 
 int main() {
+    std::vector<node> nodesToEval(10);
+    std::vector<node> nodesEvaled;
+
 
     for (int i = 0; i < nodesToEval.size(); i++) {
         nodesToEval[i].id = i;
@@ -40,16 +40,16 @@ int main() {
         node targetNode;
 
         printNodeVector(nodesToEval, "The list of nodes before being sorted by F_Values is: ");
-
+        
         std::sort(nodesToEval.begin(), nodesToEval.end(), isFCostGreater);
         printNodeVector(nodesToEval, "The list of nodes after being sorted by F_Values is: ");
 
         node current = nodesToEval[0];
         std::cout << current.g_cost;
 
-        nodesToEval.erase(remove(nodesToEval.begin(), nodesToEval.end(), current), nodesToEval.end());
-
         nodesEvaled.push_back(current);
+        
+        nodesToEval.erase(nodesToEval.begin());
 
         done = true;
     }
