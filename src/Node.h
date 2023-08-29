@@ -102,3 +102,18 @@ inline bool isFCostGreater(const Node& node1, const Node& node2) {
 inline bool operator==(const Node& firstNode, const Node& secondNode) {
     return secondNode.getId() == firstNode.getId();
 }
+
+inline void calcGCost(Node& node, const Node& startNode)
+{
+    node.set_g_cost(node.calcManhattanDistance(startNode));
+}
+
+inline void calcHCost(Node& node, const Node& targetNode)
+{
+    node.set_h_cost(node.calcManhattanDistance(targetNode));
+}
+
+inline void calcFCost(Node& node)
+{
+    node.set_f_cost(node.g_Cost() + node.h_Cost());
+}

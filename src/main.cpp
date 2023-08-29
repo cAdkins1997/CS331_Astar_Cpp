@@ -14,31 +14,25 @@ int main() {
     std::vector<Node> nodeToEvaluate(10);
     std::vector<Node> nodesEvaluated;
 
+    Node areaNode[3][3];
+
 
     for (int i = 0; i < nodeToEvaluate.size(); i++) {
         nodeToEvaluate[i].set_id(i);
     }
+    
+    printNodeVector(nodeToEvaluate, "The list of nodes before being sorted by F_Values is: ");
+    
+    std::sort(nodeToEvaluate.begin(), nodeToEvaluate.end(), isFCostGreater);
 
-    /* the logic behind the while loop is also placeholder and should change once more of the algorithm is put together,
-    right now it basically just executes as if the while loop wasn't even there */
-    bool done = false;
-    while (!done) {
-        
-        printNodeVector(nodeToEvaluate, "The list of nodes before being sorted by F_Values is: ");
-        
-        std::sort(nodeToEvaluate.begin(), nodeToEvaluate.end(), isFCostGreater);
+    printNodeVector(nodeToEvaluate, "The list of nodes after being sorted by F_Values is: ");
+    
+    Node current = nodeToEvaluate[0];
+    std::cout << current.g_Cost();
 
-        printNodeVector(nodeToEvaluate, "The list of nodes after being sorted by F_Values is: ");
-        
-        Node current = nodeToEvaluate[0];
-        std::cout << current.g_Cost();
-
-        nodesEvaluated.push_back(current);
-        
-        nodeToEvaluate.erase(nodeToEvaluate.begin());
-        
-        done = true;
-    }
+    nodesEvaluated.push_back(current);
+    
+    nodeToEvaluate.erase(nodeToEvaluate.begin());
 }
 
 void printNodeVector(const std::vector<Node>& vector, const std::string& descriptionMessage) {
