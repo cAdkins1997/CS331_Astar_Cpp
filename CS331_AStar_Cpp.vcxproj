@@ -251,6 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Node.h" />
+    <ClInclude Include="src\NeighborArray.h" />
     <ClInclude Include="src\NodeGrid.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

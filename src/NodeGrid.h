@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <cmath>
-
 #include "Node.h"
 
 class NodeGrid
@@ -57,22 +56,17 @@ public:
         initStartingNode();
     }
 
-    Node getLocationNode()
+    Node getLocationNode() const
     {
-        try
+        for (unsigned int i = 0; i < 10; i++)
         {
-            for (int i = 0; i < 10; i++)
+            for (unsigned int j = 0; j < 10; j++)
             {
-                for (int j = 0; j < 10; j++)
+                if (nodeGrid[i][j].getType() == 2)
                 {
-                    if (nodeGrid[i][j].getType() == 2)
-                    {
-                        return nodeGrid[i][j];
-                    }
+                    return nodeGrid[i][j];
                 }
             }
-        } catch(std::exception& e) {
-            std::cout << "Unable to find location node. Exception Nr. " << e.what() << std::endl;
         }
     }
 
@@ -83,5 +77,10 @@ public:
         nodeGrid[currentX][currentY].set_type(0);
 
         nodeGrid[x][y].set_type(2);
+    }
+
+    Node get_TargetNode() const
+    {
+        return targetNode;
     }
 };

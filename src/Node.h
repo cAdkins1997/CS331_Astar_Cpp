@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-
 class Node
 {
 private:
@@ -13,6 +12,8 @@ private:
     int g_cost = 0;
     int h_cost = 0;
     int f_cost = g_cost + h_cost;
+
+    bool valid = true;
     
 public:
     
@@ -92,6 +93,16 @@ public:
     void set_f_cost(int f_cost)
     {
         this->f_cost = f_cost;
+    }
+
+    bool get_validity() const
+    {
+        return valid;
+    }
+
+    void set_validity(bool valid)
+    {
+        this->valid = valid;
     }
 };
 
