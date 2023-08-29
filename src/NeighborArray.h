@@ -68,21 +68,21 @@ private:
         {
             for (unsigned int i = 0; i < 3; i++)
             {
-                nodeArea[3][i].set_validity(false);
+                nodeArea[2][i].set_validity(false);
             }
         }
         if (!isValid(locationX,locationY - 1))
         {
             for (unsigned int i = 0; i < 3; i++)
             {
-                nodeArea[i][3].set_validity(false);
+                nodeArea[i][0].set_validity(false);
             }
         }
         if (!isValid(locationX, locationY + 1))
         {
             for (unsigned int i = 0; i < 3; i++)
             {
-                nodeArea[i][0].set_validity(false);
+                nodeArea[i][2].set_validity(false);
             }
         }
     }

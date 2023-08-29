@@ -5,33 +5,38 @@
 class NodeGrid
 {
 private:
-    Node nodeGrid[10][10];
-    Node targetNode;
-    Node locationNode;
 
-    void initTargetNode()
+    struct locationStruct
     {
-        int targetX = rand() % 10;
-        int targetY = rand() % 10;
+        int xPos;
+        int yPos;
 
-        nodeGrid[targetX][targetY].set_type(1);
-        targetNode = nodeGrid[targetX][targetY];
-    }
-
-    void initStartingNode()
+        locationStruct(int _xPos, int _yPos)
+        {
+            xPos = _xPos;
+            yPos = _yPos;
+        }
+    };
+    
+    Node nodeGrid[10][10];
+    Node& targetNode = nodeGrid[rand() % 10][rand() % 10];
+    locationStruct locCord = initStartingNode();
+    Node& locationNode = nodeGrid[locCord.xPos][locCord.yPos];
+    
+    locationStruct initStartingNode()
     {
         bool startFound = false;
         while (!startFound)
         {
-            int startX = rand() % 10;
-            int startY = rand() % 10;
-            int potentialStart[] = {startX, startY};
-            int target[] = {targetNode.x_location(), targetNode.y_location()};
+            const int startX = rand() % 10;
+            const int startY = rand() % 10;
+            const int potentialStart[] = {startX, startY};
+            const int target[] = {targetNode.x_location(), targetNode.y_location()};
             if (potentialStart != target)
             {
                 nodeGrid[startX][startY].set_type(2);
-                locationNode = nodeGrid[startX][startY];
-                startFound = true;
+                locationStruct coords = locationStruct(startX, startY);
+                return coords;
             }
         }
     }
@@ -52,7 +57,7 @@ public:
             }
         }
 
-        initTargetNode();
+        nodeGrid[targetNode.x_location()][targetNode.y_location()].set_type(1);
         initStartingNode();
     }
 
@@ -72,8 +77,8 @@ public:
 
     void set_LocationNode(int x, int y)
     {
-        int currentX = locationNode.x_location();
-        int currentY = locationNode.y_location();
+        const int currentX = locationNode.x_location();
+        const int currentY = locationNode.y_location();
         nodeGrid[currentX][currentY].set_type(0);
 
         nodeGrid[x][y].set_type(2);
