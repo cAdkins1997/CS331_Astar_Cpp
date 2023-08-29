@@ -8,6 +8,34 @@ class NodeGrid
 private:
     Node nodeGrid[10][10];
     Node targetNode;
+    Node locationNode;
+
+    void initTargetNode()
+    {
+        int targetX = rand() % 10;
+        int targetY = rand() % 10;
+
+        nodeGrid[targetX][targetY].set_type(1);
+        targetNode = nodeGrid[targetX][targetY];
+    }
+
+    void initStartingNode()
+    {
+        bool startFound = false;
+        while (!startFound)
+        {
+            int startX = rand() % 10;
+            int startY = rand() % 10;
+            int potentialStart[] = {startX, startY};
+            int target[] = {targetNode.x_location(), targetNode.y_location()};
+            if (potentialStart != target)
+            {
+                nodeGrid[startX][startY].set_type(2);
+                locationNode = nodeGrid[startX][startY];
+                startFound = true;
+            }
+        }
+    }
     
 public:
     NodeGrid()
@@ -26,14 +54,34 @@ public:
         }
 
         initTargetNode();
+        initStartingNode();
     }
 
-    void initTargetNode()
+    Node getLocationNode()
     {
-        int xValue = rand() % 10 + 1;
-        int yValue = rand() % 10 + 1;
+        try
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (nodeGrid[i][j].getType() == 2)
+                    {
+                        return nodeGrid[i][j];
+                    }
+                }
+            }
+        } catch(std::exception& e) {
+            std::cout << "Unable to find location node. Exception Nr. " << e.what() << std::endl;
+        }
+    }
 
-        nodeGrid[xValue][yValue].set_type(2);
-        targetNode = nodeGrid[xValue][yValue];
+    void set_LocationNode(int x, int y)
+    {
+        int currentX = locationNode.x_location();
+        int currentY = locationNode.y_location();
+        nodeGrid[currentX][currentY].set_type(0);
+
+        nodeGrid[x][y].set_type(2);
     }
 };

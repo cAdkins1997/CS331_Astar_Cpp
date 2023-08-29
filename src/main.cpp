@@ -9,23 +9,14 @@
 void printNodeVector(const std::vector<Node>& vector, const std::string& descriptionMessage);
 
 int main() {
-    NodeGrid node_grid;
+    NodeGrid node_grid = NodeGrid();
     
-    std::vector<Node> nodeToEvaluate(10);
+    std::vector<Node> nodeToEvaluate;
     std::vector<Node> nodesEvaluated;
 
-    Node areaNode[3][3];
-
-
-    for (int i = 0; i < nodeToEvaluate.size(); i++) {
-        nodeToEvaluate[i].set_id(i);
-    }
-    
-    printNodeVector(nodeToEvaluate, "The list of nodes before being sorted by F_Values is: ");
+    Node location = node_grid.getLocationNode();
     
     std::sort(nodeToEvaluate.begin(), nodeToEvaluate.end(), isFCostGreater);
-
-    printNodeVector(nodeToEvaluate, "The list of nodes after being sorted by F_Values is: ");
     
     Node current = nodeToEvaluate[0];
     std::cout << current.g_Cost();

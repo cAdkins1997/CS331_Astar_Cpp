@@ -4,14 +4,14 @@
 class Node
 {
 private:
-    enum type {Free = 0, Obstacle = 1, Target = 2};
+    enum type {free = 0, target = 1, location = 2, obstacle = 3};
     int id = 0;
     int xLocation = 0;
     int yLocation = 0;
     int type = 0;
 
-    int g_cost = rand() % 10 + 1;
-    int h_cost = rand() % 10 + 1;
+    int g_cost = 0;
+    int h_cost = 0;
     int f_cost = g_cost + h_cost;
     
 public:
