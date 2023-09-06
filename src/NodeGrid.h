@@ -1,6 +1,9 @@
 ﻿#pragma once
-#include <cmath>
 #include "Node.h"
+#include "aStarUtility.h"
+
+#define GRID_SIZE_X 10
+#define GRID_SIZE_Y 10
 
 class NodeGrid
 {
@@ -19,7 +22,7 @@ private:
     };
     
     Node nodeGrid[10][10];
-    Node& targetNode = nodeGrid[rand() % 10][rand() % 10];
+    Node& targetNode = nodeGrid[aStarRandom(0, GRID_SIZE_X)][aStarRandom(0, GRID_SIZE_Y)];
     locationStruct locCord = initStartingNode();
     Node& locationNode = nodeGrid[locCord.xPos][locCord.yPos];
     
@@ -28,8 +31,8 @@ private:
         bool startFound = false;
         while (!startFound)
         {
-            const int startX = rand() % 10;
-            const int startY = rand() % 10;
+            const int startX = aStarRandom(0, GRID_SIZE_X);
+            const int startY = aStarRandom(0, GRID_SIZE_Y);
             const int potentialStart[] = {startX, startY};
             const int target[] = {targetNode.x_location(), targetNode.y_location()};
             if (potentialStart != target)

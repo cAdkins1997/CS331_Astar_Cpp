@@ -250,6 +250,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\aStarUtility.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\NeighborArray.h" />
     <ClInclude Include="src\NodeGrid.h" />

@@ -22,13 +22,3 @@ int main() {
     
     nodesToEvaluate.erase(nodesToEvaluate.begin());
 }
-
-void printNodeVector(const std::vector<Node>& vector, const std::string& descriptionMessage) {
-    std::cout << descriptionMessage << std::endl;
-
-    for (unsigned int i = 0; i < vector.size(); i++) {
-        std::cout << "f_cost for Node: " << i << " is: " << vector[i].f_Cost() << std::endl;
-    }
-
-    std::cout << std::endl;
-}

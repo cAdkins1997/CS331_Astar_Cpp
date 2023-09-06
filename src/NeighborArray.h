@@ -104,16 +104,4 @@ private:
     
         return neighbor_array;
     }
-    
-    /*void calcNeighborCosts(std::vector<Node>& array, const NodeGrid& nodeGrid)
-    {
-        const Node location = nodeGrid.getLocationNode();
-        const Node target = nodeGrid.get_TargetNode();
-        for (unsigned int i = 0; i < array.size(); i++)
-        {
-            calcGCost(array[i], location);
-            calcHCost(array[i], target);
-            calcFCost(array[i]);
-        }
-    }*/
 };
