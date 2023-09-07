@@ -5,8 +5,6 @@
 
 #include "NeighborArray.h"
 
-void printNodeVector(const std::vector<Node>& vector, const std::string& descriptionMessage);
-
 int main() {
     NodeGrid node_grid = NodeGrid();
     
