@@ -18,9 +18,9 @@ public:
         const Node target = nodeGrid.get_TargetNode();
         for (unsigned int i = 0; i < _neighborArray.size(); i++)
         {
-            calcGCost(_neighborArray[i], location);
-            calcHCost(_neighborArray[i], target);
-            calcFCost(_neighborArray[i]);
+            _neighborArray[i].calcGCost(location);
+            _neighborArray[i].calcHCost(location);
+            _neighborArray[i].calcFCost();
         }
         neighborArray = _neighborArray;
     }
@@ -95,7 +95,7 @@ private:
         {
             for (unsigned int j = 0; j < 3; j++)
             {
-                if (nodeArea[i][j].get_validity() == true)
+                if (nodeArea[i][j].get_validity())
                 {
                     neighbor_array.push_back(nodeArea[i][j]);
                 }

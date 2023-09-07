@@ -25,37 +25,52 @@ public:
         return abs(xLocation - yLocation) + abs(targetX - targetY);
     }
 
-    int getId() const
+    inline void calcGCost(const Node& startNode)
+    {
+        set_g_cost(calcManhattanDistance(startNode));
+    }
+
+    inline void calcHCost(const Node& targetNode)
+    {
+        set_h_cost(calcManhattanDistance(targetNode));
+    }
+
+    inline void calcFCost()
+    {
+        set_f_cost(g_cost + f_cost);
+    }
+
+    [[nodiscard]] int getId() const
     {
         return id;
     }
 
-    int x_location() const
+    [[nodiscard]] int x_location() const
     {
         return xLocation;
     }
 
-    int y_location() const
+    [[nodiscard]] int y_location() const
     {
         return yLocation;
     }
 
-    int getType() const
+    [[nodiscard]] int getType() const
     {
         return type;
     }
 
-    int g_Cost() const
+    [[nodiscard]] int g_Cost() const
     {
         return g_cost;
     }
 
-    int h_Cost() const
+    [[nodiscard]] int h_Cost() const
     {
         return h_cost;
     }
 
-    int f_Cost() const
+    [[nodiscard]] int f_Cost() const
     {
         return f_cost;
     }
@@ -95,7 +110,7 @@ public:
         this->f_cost = f_cost;
     }
 
-    bool get_validity() const
+    [[nodiscard]] bool get_validity() const
     {
         return valid;
     }
@@ -106,25 +121,10 @@ public:
     }
 };
 
-inline bool isFCostGreater(const Node& node1, const Node& node2) {
+static inline bool isFCostGreater(const Node& node1, const Node& node2) {
     return node2.f_Cost() > node1.f_Cost();
 }
 
 inline bool operator==(const Node& firstNode, const Node& secondNode) {
     return secondNode.getId() == firstNode.getId();
-}
-
-inline void calcGCost(Node& node, const Node& startNode)
-{
-    node.set_g_cost(node.calcManhattanDistance(startNode));
-}
-
-inline void calcHCost(Node& node, const Node& targetNode)
-{
-    node.set_h_cost(node.calcManhattanDistance(targetNode));
-}
-
-inline void calcFCost(Node& node)
-{
-    node.set_f_cost(node.g_Cost() + node.h_Cost());
 }
