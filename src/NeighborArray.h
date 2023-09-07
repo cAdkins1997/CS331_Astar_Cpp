@@ -55,8 +55,8 @@ private:
     
     void boundsChecking(const Node& location, Node (&nodeArea)[3][3])
     {
-        int locationX = location.x_location();
-        int locationY = location.y_location();
+        const int locationX = location.x_location();
+        const int locationY = location.y_location();
         if (!isValid(locationX - 1, locationY))
         {
             for (unsigned int i = 0; i < 3; i++)
@@ -85,6 +85,7 @@ private:
                 nodeArea[i][2].set_validity(false);
             }
         }
+        nodeArea[1][1].set_validity(false);
     }
     
     std::vector<Node> fillNeighborArray(Node (&nodeArea)[3][3])
