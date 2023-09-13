@@ -14,12 +14,11 @@ public:
         Node location = nodeGrid.getLocationNode();
         boundsChecking(location, nodeArea);
         std::vector<Node> _neighborArray = fillNeighborArray(nodeArea);
-        const Node loc = nodeGrid.getLocationNode();
         const Node target = nodeGrid.get_TargetNode();
         for (unsigned int i = 0; i < _neighborArray.size(); i++)
         {
             _neighborArray[i].calcGCost(location);
-            _neighborArray[i].calcHCost(location);
+            _neighborArray[i].calcHCost(target);
             _neighborArray[i].calcFCost();
         }
         neighborArray = _neighborArray;

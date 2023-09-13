@@ -31,6 +31,8 @@ public:
         nodeGrid[targetNode.x_location()][targetNode.y_location()].set_type(1);
         targetNode = nodeGrid[aStarRandom(0, GRID_SIZE_X)][aStarRandom(0, GRID_SIZE_Y)];
         startNode = nodeGrid[aStarRandom(0, GRID_SIZE_X)][aStarRandom(0, GRID_SIZE_X)];
+        locationNode = startNode;
+
     }
 
     Node getLocationNode() const

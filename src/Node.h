@@ -9,33 +9,33 @@ private:
     int yLocation = 0;
     int type = 0;
 
-    int g_cost = 0;
-    int h_cost = 0;
-    int f_cost = g_cost + h_cost;
+    double g_cost = 0;
+    double h_cost = 0;
+    double f_cost = g_cost + h_cost;
 
     bool valid = true;
     
 public:
     
-    int calcManhattanDistance(const Node& targetNode) const
+    int calcManhattanDistance(const Node& comparedNode) const
     {
-        const int targetX = targetNode.xLocation;
-        const int targetY = targetNode.yLocation;
+        const int targetX = comparedNode.xLocation;
+        const int targetY = comparedNode.yLocation;
         
         return abs(xLocation - yLocation) + abs(targetX - targetY);
     }
 
-    double calcEuclideanDistance(const Node& targetNode) const
+    double calcEuclideanDistance(const Node& comparedNode) const
     {
-        const int targetX = targetNode.xLocation;
-        const int targetY = targetNode.yLocation;
+        const int targetX = comparedNode.xLocation;
+        const int targetY = comparedNode.yLocation;
 
         return sqrt(pow(targetX - xLocation, 2) + pow(targetY - yLocation, 2) * 1.0);
     }
 
-    inline void calcGCost(const Node& startNode)
+    inline void calcGCost(const Node& locationNode)
     {
-        set_g_cost(calcEuclideanDistance(startNode));
+        set_g_cost(calcEuclideanDistance(locationNode));
     }
 
     inline void calcHCost(const Node& targetNode)
@@ -45,7 +45,7 @@ public:
 
     inline void calcFCost()
     {
-        set_f_cost(g_cost + f_cost);
+        set_f_cost(g_cost + h_cost);
     }
 
     [[nodiscard]] int getId() const
@@ -68,24 +68,24 @@ public:
         return type;
     }
 
-    [[nodiscard]] int g_Cost() const
+    [[nodiscard]] double g_Cost() const
     {
         return g_cost;
     }
 
-    [[nodiscard]] int h_Cost() const
+    [[nodiscard]] double h_Cost() const
     {
         return h_cost;
     }
 
-    [[nodiscard]] int f_Cost() const
+    [[nodiscard]] double f_Cost() const
     {
         return f_cost;
     }
 
-    void set_id(int id)
+    void set_id(int _id)
     {
-        this->id = id;
+        this->id = _id;
     }
 
     void set_x_location(int x_location)
@@ -104,24 +104,24 @@ public:
         yLocation = y;
     }
 
-    void set_type(int type)
+    void set_type(int _type)
     {
-        this->type = type;
+        this->type = _type;
     }
 
-    void set_g_cost(int g_cost)
+    void set_g_cost(double _g_cost)
     {
-        this->g_cost = g_cost;
+        this->g_cost = _g_cost;
     }
 
-    void set_h_cost(int h_cost)
+    void set_h_cost(double _h_cost)
     {
-        this->h_cost = h_cost;
+        this->h_cost = _h_cost;
     }
 
-    void set_f_cost(int f_cost)
+    void set_f_cost(double _f_cost)
     {
-        this->f_cost = f_cost;
+        this->f_cost = _f_cost;
     }
 
     [[nodiscard]] bool get_validity() const
@@ -129,9 +129,9 @@ public:
         return valid;
     }
 
-    void set_validity(bool valid)
+    void set_validity(bool _valid)
     {
-        this->valid = valid;
+        this->valid = _valid;
     }
 };
 
