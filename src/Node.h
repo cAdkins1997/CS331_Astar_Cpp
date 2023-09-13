@@ -25,7 +25,7 @@ public:
         return abs(xLocation - yLocation) + abs(targetX - targetY);
     }
 
-    double euclideanDistance(const Node& targetNode) const
+    double calcEuclideanDistance(const Node& targetNode) const
     {
         const int targetX = targetNode.xLocation;
         const int targetY = targetNode.yLocation;
@@ -35,12 +35,12 @@ public:
 
     inline void calcGCost(const Node& startNode)
     {
-        set_g_cost(calcManhattanDistance(startNode));
+        set_g_cost(calcEuclideanDistance(startNode));
     }
 
     inline void calcHCost(const Node& targetNode)
     {
-        set_h_cost(calcManhattanDistance(targetNode));
+        set_h_cost(calcEuclideanDistance(targetNode));
     }
 
     inline void calcFCost()
