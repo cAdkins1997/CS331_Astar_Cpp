@@ -41,8 +41,7 @@ private:
             for (int j = 0; j < 3; j++)
             {
                 idInc++;
-                nodeArea[i][j].set_x_location(i);
-                nodeArea[i][j].set_y_location(j);
+                nodeArea[i][j].set_Location(i, j);
                 nodeArea[i][j].set_id(idInc);
             }
         }

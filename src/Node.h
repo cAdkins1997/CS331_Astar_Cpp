@@ -90,6 +90,12 @@ public:
         yLocation = y_location;
     }
 
+    void set_Location(int x, int y)
+    {
+        xLocation = x;
+        yLocation = y;
+    }
+
     void set_type(int type)
     {
         this->type = type;
