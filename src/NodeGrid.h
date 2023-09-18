@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "Node.h"
 #include "aStarUtility.h"
 
 #define GRID_SIZE_X 10
@@ -35,18 +34,27 @@ public:
 
     }
 
-    Node getLocationNode() const
+    [[nodiscard]] Node getNode(int x, int y) const
+    {
+        return nodeGrid[x][y];
+    }
+
+    [[nodiscard]] Node getLocationNode() const
     {
         return locationNode;
     }
 
-    Node getStartNode() const
+    [[nodiscard]] Node getStartNode() const
     {
         return locationNode;
     }
 
     void setLocationNode(int x, int y)
     {
+        const int oldX = locationNode.x_location();
+        const int oldY = locationNode.y_location();
+        nodeGrid[oldX][oldY].set_type(0);
+        
         nodeGrid[x][y].set_Location(x, y);
         locationNode.set_Location(x, y);
     }
@@ -61,7 +69,7 @@ public:
         locationNode = location;
     }
 
-    Node get_TargetNode() const
+    [[nodiscard]] Node get_TargetNode() const
     {
         return targetNode;
     }

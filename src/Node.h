@@ -135,10 +135,15 @@ public:
     }
 };
 
-static inline bool isFCostGreater(const Node& node1, const Node& node2) {
-    return node2.f_Cost() > node1.f_Cost();
+static inline bool isFCostLesser(const Node& node1, const Node& node2) {
+    return node1.f_Cost() < node2.f_Cost();
 }
 
 inline bool operator==(const Node& firstNode, const Node& secondNode) {
     return secondNode.getId() == firstNode.getId();
+}
+
+inline bool operator!=(const Node& firstNode, const Node& secondNode)
+{
+    return secondNode.getId() != firstNode.getId();
 }
