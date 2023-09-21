@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "Node.h"
 #include "aStarUtility.h"
 
 #define GRID_SIZE_X 10
@@ -8,11 +7,11 @@
 class NodeGrid
 {
 private:
-    
     Node nodeGrid[10][10];
     Node targetNode = nodeGrid[aStarRandom(0, GRID_SIZE_X)][aStarRandom(0, GRID_SIZE_Y)];
-    Node locationNode = nodeGrid[aStarRandom(0, GRID_SIZE_X)][aStarRandom(0, GRID_SIZE_X)];
-
+    Node startNode = nodeGrid[aStarRandom(0, GRID_SIZE_X)][aStarRandom(0, GRID_SIZE_X)];
+    Node locationNode = startNode;
+    
 public:
     NodeGrid()
     {
@@ -23,20 +22,41 @@ public:
             {
                 idInc++;
                 nodeGrid[i][j].set_type(0);
-                nodeGrid[i][j].set_x_location(i);
-                nodeGrid[i][j].set_y_location(j);
+                nodeGrid[i][j].set_Location(i, j);
                 nodeGrid[i][j].set_id(idInc);
             }
         }
 
         nodeGrid[targetNode.x_location()][targetNode.y_location()].set_type(1);
         targetNode = nodeGrid[aStarRandom(0, GRID_SIZE_X)][aStarRandom(0, GRID_SIZE_Y)];
-        locationNode = nodeGrid[aStarRandom(0, GRID_SIZE_X)][aStarRandom(0, GRID_SIZE_X)];
+        startNode = nodeGrid[aStarRandom(0, GRID_SIZE_X)][aStarRandom(0, GRID_SIZE_X)];
+        locationNode = startNode;
+
     }
 
-    Node getLocationNode() const
+    [[nodiscard]] Node getNode(int x, int y) const
+    {
+        return nodeGrid[x][y];
+    }
+
+    [[nodiscard]] Node getLocationNode() const
     {
         return locationNode;
+    }
+
+    [[nodiscard]] Node getStartNode() const
+    {
+        return locationNode;
+    }
+
+    void setLocationNode(int x, int y)
+    {
+        const int oldX = locationNode.x_location();
+        const int oldY = locationNode.y_location();
+        nodeGrid[oldX][oldY].set_type(0);
+        
+        nodeGrid[x][y].set_Location(x, y);
+        locationNode.set_Location(x, y);
     }
 
     void set_LocationNode(int x, int y)
@@ -49,7 +69,7 @@ public:
         locationNode = location;
     }
 
-    Node get_TargetNode() const
+    [[nodiscard]] Node get_TargetNode() const
     {
         return targetNode;
     }

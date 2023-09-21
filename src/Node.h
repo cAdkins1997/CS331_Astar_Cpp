@@ -9,35 +9,43 @@ private:
     int yLocation = 0;
     int type = 0;
 
-    int g_cost = 0;
-    int h_cost = 0;
-    int f_cost = g_cost + h_cost;
+    double g_cost = 0;
+    double h_cost = 0;
+    double f_cost = g_cost + h_cost;
 
     bool valid = true;
     
 public:
     
-    int calcManhattanDistance(const Node& targetNode) const
+    int calcManhattanDistance(const Node& comparedNode) const
     {
-        const int targetX = targetNode.xLocation;
-        const int targetY = targetNode.yLocation;
+        const int targetX = comparedNode.xLocation;
+        const int targetY = comparedNode.yLocation;
         
         return abs(xLocation - yLocation) + abs(targetX - targetY);
     }
 
-    inline void calcGCost(const Node& startNode)
+    double calcEuclideanDistance(const Node& comparedNode) const
     {
-        set_g_cost(calcManhattanDistance(startNode));
+        const int targetX = comparedNode.xLocation;
+        const int targetY = comparedNode.yLocation;
+
+        return sqrt(pow(targetX - xLocation, 2) + pow(targetY - yLocation, 2) * 1.0);
+    }
+
+    inline void calcGCost(const Node& locationNode)
+    {
+        set_g_cost(calcEuclideanDistance(locationNode));
     }
 
     inline void calcHCost(const Node& targetNode)
     {
-        set_h_cost(calcManhattanDistance(targetNode));
+        set_h_cost(calcEuclideanDistance(targetNode));
     }
 
     inline void calcFCost()
     {
-        set_f_cost(g_cost + f_cost);
+        set_f_cost(g_cost + h_cost);
     }
 
     [[nodiscard]] int getId() const
@@ -60,24 +68,24 @@ public:
         return type;
     }
 
-    [[nodiscard]] int g_Cost() const
+    [[nodiscard]] double g_Cost() const
     {
         return g_cost;
     }
 
-    [[nodiscard]] int h_Cost() const
+    [[nodiscard]] double h_Cost() const
     {
         return h_cost;
     }
 
-    [[nodiscard]] int f_Cost() const
+    [[nodiscard]] double f_Cost() const
     {
         return f_cost;
     }
 
-    void set_id(int id)
+    void set_id(int _id)
     {
-        this->id = id;
+        this->id = _id;
     }
 
     void set_x_location(int x_location)
@@ -90,24 +98,30 @@ public:
         yLocation = y_location;
     }
 
-    void set_type(int type)
+    void set_Location(int x, int y)
     {
-        this->type = type;
+        xLocation = x;
+        yLocation = y;
     }
 
-    void set_g_cost(int g_cost)
+    void set_type(int _type)
     {
-        this->g_cost = g_cost;
+        this->type = _type;
     }
 
-    void set_h_cost(int h_cost)
+    void set_g_cost(double _g_cost)
     {
-        this->h_cost = h_cost;
+        this->g_cost = _g_cost;
     }
 
-    void set_f_cost(int f_cost)
+    void set_h_cost(double _h_cost)
     {
-        this->f_cost = f_cost;
+        this->h_cost = _h_cost;
+    }
+
+    void set_f_cost(double _f_cost)
+    {
+        this->f_cost = _f_cost;
     }
 
     [[nodiscard]] bool get_validity() const
@@ -115,16 +129,21 @@ public:
         return valid;
     }
 
-    void set_validity(bool valid)
+    void set_validity(bool _valid)
     {
-        this->valid = valid;
+        this->valid = _valid;
     }
 };
 
-static inline bool isFCostGreater(const Node& node1, const Node& node2) {
-    return node2.f_Cost() > node1.f_Cost();
+static inline bool isFCostLesser(const Node& node1, const Node& node2) {
+    return node1.f_Cost() < node2.f_Cost();
 }
 
 inline bool operator==(const Node& firstNode, const Node& secondNode) {
     return secondNode.getId() == firstNode.getId();
+}
+
+inline bool operator!=(const Node& firstNode, const Node& secondNode)
+{
+    return secondNode.getId() != firstNode.getId();
 }
