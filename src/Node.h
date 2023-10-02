@@ -1,145 +1,128 @@
-﻿#pragma once
+﻿
+#ifndef ASTARSHORTESTPATH_NODE_H
+#define ASTARSHORTESTPATH_NODE_H
 
-class Node
-{
-private:
-    enum type {free = 0, target = 1, location = 2, obstacle = 3};
-    int id = 0;
-    int xLocation = 0;
-    int yLocation = 0;
-    int type = 0;
+#include <limits>
 
-    double g_cost = 0;
-    double h_cost = 0;
-    double f_cost = g_cost + h_cost;
+enum nodeType {
+    normal = 0,
+    start = 1,
+    target = 2,
+    obstacle = 4
+};
 
-    bool valid = true;
-    
+class Node {
+
 public:
-    
-    int calcManhattanDistance(const Node& comparedNode) const
-    {
-        const int targetX = comparedNode.xLocation;
-        const int targetY = comparedNode.yLocation;
-        
-        return abs(xLocation - yLocation) + abs(targetX - targetY);
+
+    Node() = default;
+
+    Node(int _id, int _xLocation, int _yLocation) {
+        id = _id;
+        xLocation = _xLocation;
+        yLocation = _yLocation;
+        visited = false;
     }
 
-    double calcEuclideanDistance(const Node& comparedNode) const
-    {
-        const int targetX = comparedNode.xLocation;
-        const int targetY = comparedNode.yLocation;
-
-        return sqrt(pow(targetX - xLocation, 2) + pow(targetY - yLocation, 2) * 1.0);
-    }
-
-    inline void calcGCost(const Node& locationNode)
-    {
-        set_g_cost(calcEuclideanDistance(locationNode));
-    }
-
-    inline void calcHCost(const Node& targetNode)
-    {
-        set_h_cost(calcEuclideanDistance(targetNode));
-    }
-
-    inline void calcFCost()
-    {
-        set_f_cost(g_cost + h_cost);
-    }
-
-    [[nodiscard]] int getId() const
-    {
+    [[nodiscard]] int getId() const {
         return id;
     }
 
-    [[nodiscard]] int x_location() const
-    {
+    void setId(int _id) {
+        Node::id = _id;
+    }
+
+    [[nodiscard]] int getXLocation() const {
         return xLocation;
     }
 
-    [[nodiscard]] int y_location() const
-    {
+    void setXLocation(int _xLocation) {
+        Node::xLocation = _xLocation;
+    }
+
+    [[nodiscard]] int getYLocation() const {
         return yLocation;
     }
 
-    [[nodiscard]] int getType() const
-    {
+    void setYLocation(int _yLocation) {
+        Node::yLocation = _yLocation;
+    }
+
+    void setLocation(int _x, int _y) {
+        this->xLocation = _x;
+        this->yLocation = _y;
+    }
+
+    [[nodiscard]] Node *getParent() const {
+        return parent;
+    }
+
+    void setParent(Node *_parent) {
+        Node::parent = _parent;
+    }
+
+    [[nodiscard]] nodeType getType() const {
         return type;
     }
 
-    [[nodiscard]] double g_Cost() const
-    {
+    void setType(nodeType _type) {
+        Node::type = _type;
+    }
+
+    [[nodiscard]] double getGCost() const {
         return g_cost;
     }
 
-    [[nodiscard]] double h_Cost() const
-    {
+    void setGCost(double gCost) {
+        g_cost = gCost;
+    }
+
+    [[nodiscard]] double getHCost() const {
         return h_cost;
     }
 
-    [[nodiscard]] double f_Cost() const
-    {
+    void setHCost(double hCost) {
+        h_cost = hCost;
+    }
+
+    [[nodiscard]] double getFCost() const {
         return f_cost;
     }
 
-    void set_id(int _id)
-    {
-        this->id = _id;
+    void setFCost(double fCost) {
+        f_cost = fCost;
     }
 
-    void set_x_location(int x_location)
-    {
-        xLocation = x_location;
+    [[nodiscard]] bool isVisited() const {
+        return visited;
     }
 
-    void set_y_location(int y_location)
-    {
-        yLocation = y_location;
+    void setVisited(bool _visited) {
+        Node::visited = _visited;
     }
 
-    void set_Location(int x, int y)
-    {
-        xLocation = x;
-        yLocation = y;
-    }
+private:
+    int id{};
+    int xLocation{};
+    int yLocation{};
+    bool visited{};
+    Node* parent = nullptr;
+    nodeType type = normal;
 
-    void set_type(int _type)
-    {
-        this->type = _type;
-    }
-
-    void set_g_cost(double _g_cost)
-    {
-        this->g_cost = _g_cost;
-    }
-
-    void set_h_cost(double _h_cost)
-    {
-        this->h_cost = _h_cost;
-    }
-
-    void set_f_cost(double _f_cost)
-    {
-        this->f_cost = _f_cost;
-    }
-
-    [[nodiscard]] bool get_validity() const
-    {
-        return valid;
-    }
-
-    void set_validity(bool _valid)
-    {
-        this->valid = _valid;
-    }
+    double g_cost = std::numeric_limits<double>::infinity();
+    double h_cost = std::numeric_limits<double>::infinity();;
+    double f_cost = std::numeric_limits<double>::infinity();;
 };
 
-static inline bool isFCostLesser(const Node& node1, const Node& node2) {
-    return node1.f_Cost() < node2.f_Cost();
+inline bool isFCostLesser(const Node& node1, const Node& node2) {
+    return node1.getFCost() < node2.getFCost();
 }
 
-inline bool operator==(const Node& firstNode, const Node& secondNode) {
+inline bool operator==(Node *firstNode, const Node& secondNode) {
+    return secondNode.getId() == firstNode->getId();
+}
+
+inline bool operator==(Node firstNode, const Node secondNode) {
     return secondNode.getId() == firstNode.getId();
 }
 
@@ -147,3 +130,30 @@ inline bool operator!=(const Node& firstNode, const Node& secondNode)
 {
     return secondNode.getId() != firstNode.getId();
 }
+
+inline bool operator<(const Node& firstNode, const Node& secondNode) {
+    return secondNode.getFCost() < firstNode.getFCost();
+}
+
+inline bool operator>(const Node& firstNode, const Node& secondNode) {
+    return secondNode.getFCost() > firstNode.getFCost();
+}
+
+inline double calcDistanceEuclidean(const Node& currentNode, const Node& comparedNode) {
+    int currentX = currentNode.getXLocation();
+    int currentY = currentNode.getYLocation();
+
+    int comparedX = comparedNode.getXLocation();
+    int comparedY = comparedNode.getYLocation();
+
+    return sqrt(((currentX - comparedX) * 2) + ((currentY - comparedY) * 2));
+}
+
+inline int calcDistanceManhattan(const Node& firstNode, const Node& secondNode) {
+    double dx = abs(firstNode.getXLocation() - secondNode.getXLocation());
+    double dy = abs(firstNode.getYLocation() - secondNode.getYLocation());
+    double d = 3.0;
+    return d * (dx + dy);
+}
+
+#endif //ASTARSHORTESTPATH_NODE_H
