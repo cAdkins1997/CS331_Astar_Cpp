@@ -8,7 +8,8 @@ enum nodeType {
     normal = 0,
     start = 1,
     target = 2,
-    obstacle = 4
+    obstacle = 4,
+    pathNode = 5
 };
 
 class Node {

@@ -1,6 +1,5 @@
 
-#include <numeric>
-
+#include <thread>
 #include "Pathfinding.h"
 
 void printImportantNodes(const NodeGrid& nodeGrid) {
@@ -23,22 +22,14 @@ int main() {
         nodeGrids.push_back(nodeGrid);
     }
 
-    std::vector<double> executionTimes;
     for (auto grid : nodeGrids) {
-        clock_t start = clock();
         printImportantNodes(grid);
+        grid.generateObstacles();
         std::unordered_map<Node, Node> came_from;
         std::unordered_map<Node, double> cost_so_far;
-        AStar(grid, came_from, cost_so_far);
-        std::vector<Node> path = reconstructPath(grid, came_from);
-        clock_t stop = clock();
-        double elapsed = (double) (stop - start) / CLOCKS_PER_SEC;
-        printf("\nTime elapsed: %.5f\n", elapsed);
-        printPath(path);
-        executionTimes.push_back(elapsed);
+        grid.AStar(came_from, cost_so_far);
+        std::vector<Node> path = grid.reconstructPath(came_from);
+        grid.printGridTypes();
+        std::cout << '\n' << '\n';
     }
-
-    double sumOfExecTimes = std::accumulate(executionTimes.begin(), executionTimes.end(), 0.0000);
-    double avgExecTime = sumOfExecTimes / executionTimes.size();
-    std::cout << avgExecTime;
 }
