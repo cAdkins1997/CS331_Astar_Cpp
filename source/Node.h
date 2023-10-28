@@ -2,8 +2,6 @@
 #ifndef ASTARSHORTESTPATH_NODE_H
 #define ASTARSHORTESTPATH_NODE_H
 
-#include <limits>
-
 enum nodeType {
     normal = 0,
     start = 1,
@@ -17,13 +15,6 @@ class Node {
 public:
 
     Node() = default;
-
-    Node(int _id, int _xLocation, int _yLocation) {
-        id = _id;
-        xLocation = _xLocation;
-        yLocation = _yLocation;
-        visited = false;
-    }
 
     [[nodiscard]] int getId() const {
         return id;
@@ -52,14 +43,6 @@ public:
     void setLocation(int _x, int _y) {
         this->xLocation = _x;
         this->yLocation = _y;
-    }
-
-    [[nodiscard]] Node *getParent() const {
-        return parent;
-    }
-
-    void setParent(Node *_parent) {
-        Node::parent = _parent;
     }
 
     [[nodiscard]] nodeType getType() const {
@@ -107,12 +90,11 @@ private:
     int xLocation{};
     int yLocation{};
     bool visited{};
-    Node* parent = nullptr;
     nodeType type = normal;
 
-    double g_cost = std::numeric_limits<double>::infinity();
-    double h_cost = std::numeric_limits<double>::infinity();;
-    double f_cost = std::numeric_limits<double>::infinity();;
+    double g_cost = 0;
+    double h_cost = 0;
+    double f_cost = 0;
 };
 
 inline bool isFCostLesser(const Node& node1, const Node& node2) {
@@ -123,7 +105,7 @@ inline bool operator==(Node *firstNode, const Node& secondNode) {
     return secondNode.getId() == firstNode->getId();
 }
 
-inline bool operator==(Node firstNode, const Node secondNode) {
+inline bool operator==(const Node& firstNode, const Node& secondNode) {
     return secondNode.getId() == firstNode.getId();
 }
 
@@ -147,7 +129,7 @@ inline double calcDistanceEuclidean(const Node& currentNode, const Node& compare
     int comparedX = comparedNode.getXLocation();
     int comparedY = comparedNode.getYLocation();
 
-    return sqrt(((currentX - comparedX) * 2) + ((currentY - comparedY) * 2));
+    return sqrt(pow(comparedX - currentX, 2) + pow(comparedY - currentY, 2));
 }
 
 inline int calcDistanceManhattan(const Node& firstNode, const Node& secondNode) {

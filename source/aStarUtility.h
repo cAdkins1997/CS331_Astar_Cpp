@@ -1,18 +1,19 @@
-//
-// Created by ulver on 9/22/2023.
-//
 
 #ifndef ASTARSHORTESTPATH_ASTARUTILITY_H
 #define ASTARSHORTESTPATH_ASTARUTILITY_H
 
 #include <cmath>
 #include <random>
+#include <type_traits>
 
 #include "Node.h"
 
 #endif //ASTARSHORTESTPATH_ASTARUTILITY_H
 
-template <typename T> T aStarRandom(T min, T max)
+template<typename T>
+concept arithmetic_type = std::is_arithmetic_v<T>;
+
+auto aStarRandom(const arithmetic_type auto min, const arithmetic_type auto max)
 {
     std::random_device random;
     std::mt19937_64 generator(random());
@@ -20,7 +21,7 @@ template <typename T> T aStarRandom(T min, T max)
     return distribution(generator);
 }
 
-template <typename T> T clamp(T number, T min, T max)
+[[maybe_unused]] auto clamp(const arithmetic_type auto number, const arithmetic_type auto min, const arithmetic_type auto max)
 {
     if (number < min) {
         return min;
@@ -29,7 +30,6 @@ template <typename T> T clamp(T number, T min, T max)
     }
     return number;
 }
-
 
 namespace std
 {
