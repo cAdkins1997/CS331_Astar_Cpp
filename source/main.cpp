@@ -1,11 +1,7 @@
 
 #include <thread>
+#include <chrono>
 #include "Pathfinding.h"
-
-void printImportantNodes(const NodeGrid& nodeGrid) {
-    std::cout << "Start Node = [" << nodeGrid.getStartNode().getXLocation() << "][" << nodeGrid.getStartNode().getYLocation() << "]\n";
-    std::cout << "Target Node = [" << nodeGrid.getTargetNode().getXLocation() << "][" << nodeGrid.getTargetNode().getYLocation() << "]\n";
-}
 
 void printPath(const std::vector<Node>& path) {
     for (const auto& node : path) {
@@ -17,13 +13,18 @@ void printPath(const std::vector<Node>& path) {
 }
 
 int main() {
-    NodeGrid nodeGrid = NodeGrid();
-    printImportantNodes(nodeGrid);
+    auto nodeGrid = NodeGrid("../resources/obstacles.csv");
+    nodeGrid.printImportantNodes();
     nodeGrid.printGridTypes();
     std::unordered_map<Node, Node> parentChildPairs;
     std::unordered_map<Node, double> accumulatedCost;
     AStar(nodeGrid, parentChildPairs, accumulatedCost);
     std::vector<Node> path = nodeGrid.reconstructPath(parentChildPairs);
+
+    if (path.empty()) {
+        std::cout << "could not find a path to target node \n";
+    }
+
     printPath(path);
     nodeGrid.printGridTypes();
 }

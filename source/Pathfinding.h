@@ -101,9 +101,6 @@ std::unordered_map<Node, Node> breadthFirstSearch(NodeGrid& nodeGrid) {
         openSet.pop();
 
         if (currentNode == targetNode) {
-            std::cout << "Node found on while iteration " << whileIterationNumber << '\n';
-            std::cout << "Node found on for iteration " << forIterationNumber << '\n';
-            std::cout << "Node found on push " << nodePushNumber << '\n';
             break;
         }
 

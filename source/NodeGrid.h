@@ -15,6 +15,7 @@
 
 class NodeGrid {
 public:
+
     NodeGrid() {
         int idInc = 0;
         for (int x = 0; x < GRID_SIZE_X; x++) {
@@ -22,6 +23,7 @@ public:
                 ++idInc;
                 nodeGrid[x][y].setId(idInc);
                 nodeGrid[x][y].setLocation(x, y);
+                nodeGrid[x][y].setType((nodeType)aStarRandom(0, 2));
             }
         }
 
@@ -31,8 +33,31 @@ public:
             startNode = getNode(aStarRandom(0, GRID_SIZE_X), aStarRandom(0, GRID_SIZE_X));
         }
 
-        std::vector<int> obstacles = readObstacleCSV("../resources/obstacles.csv");
+        nodeGrid[targetNode.getXLocation()][targetNode.getYLocation()].setType(target);
+        nodeGrid[startNode.getXLocation()][startNode.getYLocation()].setType(start);
+    }
+
+    explicit NodeGrid(const char *obstacleFilePath) {
+        int idInc = 0;
+        for (int x = 0; x < GRID_SIZE_X; x++) {
+            for (int y = 0; y < GRID_SIZE_Y; y++) {
+                ++idInc;
+                nodeGrid[x][y].setId(idInc);
+                nodeGrid[x][y].setLocation(x, y);
+            }
+        }
+
+        std::vector<int> obstacles = readObstacleCSV(obstacleFilePath);
         generateObstacles(obstacles);
+
+        targetNode = getNode(aStarRandom(0, GRID_SIZE_X - 1), aStarRandom(0, GRID_SIZE_X - 1));
+        startNode = getNode(aStarRandom(0, GRID_SIZE_X - 1), aStarRandom(0, GRID_SIZE_X - 1));
+        while (startNode == targetNode || startNode.getType() == obstacle) {
+            startNode = getNode(aStarRandom(0, GRID_SIZE_X), aStarRandom(0, GRID_SIZE_X));
+        }
+        while (targetNode.getType() == obstacle) {
+            targetNode = getNode(aStarRandom(0, GRID_SIZE_X), aStarRandom(0, GRID_SIZE_X));
+        }
 
         nodeGrid[targetNode.getXLocation()][targetNode.getYLocation()].setType(target);
         nodeGrid[startNode.getXLocation()][startNode.getYLocation()].setType(start);
@@ -77,7 +102,7 @@ public:
             for (int j = startY; j < yBound; j++)
             {
                 Node currentNode = nodeGrid[i][j];
-                if (currentNode != locationNode)
+                if (currentNode != locationNode && currentNode.getType() != obstacle)
                 {
                     neighbors.push_back(currentNode);
                 }
@@ -95,30 +120,13 @@ public:
         return startNode;
     }
 
-    [[maybe_unused]] void setStartNode(const Node& _startNode) {
-        this->startNode = _startNode;
-    }
-
-    [[maybe_unused]] void setStartNode(int x, int y) {
-        Node newStart;
-        newStart.setLocation(x, y);
-        newStart.setType(start);
-        this->startNode = newStart;
-    }
-
     [[nodiscard]] const Node& getTargetNode() const {
         return targetNode;
     }
 
-    [[maybe_unused]] void setTargetNode(int x, int y) {
-        Node newTarget;
-        newTarget.setLocation(x, y);
-        newTarget.setType(start);
-        this->targetNode = newTarget;
-    }
-
-    [[maybe_unused]] void setTargetNode(const Node& _targetNode) {
-        this->targetNode = _targetNode;
+    void printImportantNodes() {
+        std::cout << "Start Node = [" << startNode.getXLocation() << "][" << startNode.getYLocation() << "]\n";
+        std::cout << "Target Node = [" << targetNode.getXLocation() << "][" << targetNode.getYLocation() << "]\n";
     }
 
     void printGridTypes() {
@@ -171,14 +179,15 @@ private:
     }
 
     void generateObstacles(std::vector<int>& obstacles) {
-        int counter = 0;
-        for (auto& x : nodeGrid) {
-            for (auto& y : x) {
-                int currentObstacle = obstacles[counter];
-                auto obstacleData = static_cast<nodeType>(currentObstacle);
-                y.setType(obstacleData);
-                counter++;
-            }
+
+    int counter = 0;
+    for (int x = 0; x < GRID_SIZE_X; x++) {
+        for (int y = 0; y < GRID_SIZE_Y; y++) {
+            int currentObstacle = obstacles[counter];
+            auto obstacleData = static_cast<nodeType>(currentObstacle);
+            nodeGrid[x][y].setType(obstacleData);
+            counter++;
         }
+    }
     }
 };

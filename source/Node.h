@@ -4,9 +4,9 @@
 
 enum nodeType {
     normal = 0,
-    start = 1,
+    obstacle = 1,
     target = 2,
-    obstacle = 4,
+    start = 4,
     pathNode = 5
 };
 
@@ -77,19 +77,10 @@ public:
         f_cost = fCost;
     }
 
-    [[nodiscard]] bool isVisited() const {
-        return visited;
-    }
-
-    void setVisited(bool _visited) {
-        Node::visited = _visited;
-    }
-
 private:
     int id{};
     int xLocation{};
     int yLocation{};
-    bool visited{};
     nodeType type = normal;
 
     double g_cost = 0;
@@ -122,6 +113,22 @@ inline bool operator>(const Node& firstNode, const Node& secondNode) {
     return secondNode.getFCost() > firstNode.getFCost();
 }
 
+inline int calcDistanceDiagonal(const Node& currentNode, const Node& comparedNode) {
+    int currentX = currentNode.getXLocation();
+    int currentY = currentNode.getYLocation();
+
+    int comparedX = comparedNode.getXLocation();
+    int comparedY = comparedNode.getYLocation();
+
+    int distanceX = abs(currentX - currentY);
+    int distanceY = abs(currentX - currentY);
+
+    double d1 = 3;
+    double d2 = 4;
+
+    return d1 * (distanceX + distanceY) + (d2 - 2 * d1) * std::min(distanceX, distanceY);
+}
+
 inline double calcDistanceEuclidean(const Node& currentNode, const Node& comparedNode) {
     int currentX = currentNode.getXLocation();
     int currentY = currentNode.getYLocation();
@@ -133,9 +140,9 @@ inline double calcDistanceEuclidean(const Node& currentNode, const Node& compare
 }
 
 inline int calcDistanceManhattan(const Node& firstNode, const Node& secondNode) {
-    double dx = abs(firstNode.getXLocation() - secondNode.getXLocation());
-    double dy = abs(firstNode.getYLocation() - secondNode.getYLocation());
-    double d = 3.0;
+    int dx = abs(firstNode.getXLocation() - secondNode.getXLocation());
+    int dy = abs(firstNode.getYLocation() - secondNode.getYLocation());
+    int d = 3;
     return d * (dx + dy);
 }
 
